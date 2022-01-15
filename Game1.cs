@@ -9,8 +9,7 @@ namespace Project1
         private SpriteBatch spriteBatch;
         private Texture2D backgroundImage;
         const int CEL_WIDTH = 172; // The dimentions of our cell
-        // const int CEL_HEIGHT = 171; this is determined by the animation classes
-
+        // const int CEL_HEIGHT = 171; this is determined by the animation classes 
         private Texture2D idleSprite; // - PLAYER
         private CelAnimationSequence walking; // - PLAYER
         private CelAnimationPlayer playerAnimator; // - PLAYER
@@ -104,14 +103,21 @@ namespace Project1
         public void DrawPlayer()
         {
             Movement motionState = player1.Motion();
+            FacingDirection direction = player1.Direction();
             Vector2 spritePosition = player1.Position();
             if (motionState == Movement.Idle)
             {
-                spriteBatch.Draw(idleSprite, spritePosition, Color.White);
+                if (direction == FacingDirection.Right)
+                {
+                    spriteBatch.Draw(idleSprite, spritePosition, Color.White);
+                }
+                else if (direction == FacingDirection.Left)
+                {
+                    spriteBatch.Draw(idleSprite, spritePosition, null, Color.White,0, Vector2.Zero, 1, SpriteEffects.FlipHorizontally, 0);
+                }
             }
             else if (motionState == Movement.Walking)
             {
-                FacingDirection direction = player1.Direction();
                 if (direction == FacingDirection.Right)
                 {
                     playerAnimator.Draw(spriteBatch, spritePosition, SpriteEffects.None);

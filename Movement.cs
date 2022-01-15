@@ -8,6 +8,6 @@ namespace Project1
     public enum Movement
     {
         Idle = 0,
-        Walking = 1
+        Walking = 1,
     }
 }
