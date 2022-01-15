@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Lab01
+namespace Project1
 {
     /// <summary>
     /// Represents a cel animated texture.

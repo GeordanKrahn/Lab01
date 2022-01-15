@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Lab01
+namespace Project1
 {
     /// <summary>
     /// Controls playback of a CelAnimationSequence.

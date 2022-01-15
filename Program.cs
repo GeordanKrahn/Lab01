@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lab01
+namespace Project1
 {
     public static class Program
     {

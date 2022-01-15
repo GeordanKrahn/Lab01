@@ -2,45 +2,19 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Lab01
+namespace Project1
 {
     public class Game1 : Game
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-
-        // This will be used to draw the idle sprite or animate the sprite sheet at a point.
-        Vector2 spritePosition;
-
-        // These images will fill the scene.
-        Texture2D backgroundImage;
-        Texture2D idleSprite; // for our character.
-        CelAnimationSequence walking;
-        CelAnimationPlayer playerAnimator;
-
-        // for the boundaries
-        float screenHeight;
-        float screenWidth;
-        float floorHeight; // our character needs to "walk" on this
-
-        // states to keep track of our character
-        MovementState currentState;
-        FacingDirection direction;
-
-        // State for whether we are moving or not.
-        enum MovementState
-        {
-            Idle = 0,
-            Walking = 1
-        }
-
-        // Need a facing direction. If facing right, keep sprite orientation
-        // If facing left flip the image - -1 scale should work.
-        enum FacingDirection
-        {
-            Right = 0,
-            Left = 1
-        }
+        private Texture2D backgroundImage;
+        const int CEL_WIDTH = 172; // The dimentions of our cell
+        // const int CEL_HEIGHT = 171; this is determined by the animation classes
+        const float CEL_TIME = 1 / 8.0f;
+        const int SCREEN_HEIGHT = 224; // for the boundaries
+        const int SCREEN_WIDTH = 384; // for the boundaries
+        Player player1; // our player to control. 
 
         public Game1()
         {
@@ -51,26 +25,35 @@ namespace Lab01
 
         protected override void Initialize()
         {
+            Texture2D idleSprite = Content.Load<Texture2D>("megaman-idle");
+            Texture2D spriteSheet = Content.Load<Texture2D>("mega-man-sprite-sheet");
+            CelAnimationSequence sequence = new CelAnimationSequence(spriteSheet, CEL_WIDTH, CEL_TIME);
+            player1 = new Player(new Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), 2, idleSprite, new CelAnimationPlayer(), sequence, FacingDirection.Right);
+            graphics.PreferredBackBufferWidth = SCREEN_WIDTH;
+            graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;
+            graphics.ApplyChanges();
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            //Texture2D spriteSheet = 
+            backgroundImage = Content.Load<Texture2D>("background"); // set up the background image
         }
 
         protected override void Update(GameTime gameTime)
         {
-            // This will keep track of and update the states and position of our character and listen for input.
+            player1.Update(gameTime, SCREEN_WIDTH, SCREEN_HEIGHT);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            // This will draw the scene each frame. Draw either the idle state or walking state and animation based on whether we are moving
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            spriteBatch.Begin();
+            spriteBatch.Draw(backgroundImage, Vector2.Zero, Color.White); // draw background
+            player1.Draw(spriteBatch); // draw our character
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }
