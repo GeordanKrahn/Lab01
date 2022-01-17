@@ -25,13 +25,12 @@ namespace Project1
         /// <summary>
         /// Constructs a new CelAnimationSequence.
         /// </summary>        
-        public CelAnimationSequence(Texture2D texture, int celWidth, float celTime)
+        public CelAnimationSequence(Texture2D texture, int celWidth, int celHeight, float celTime)
         {
             this.texture = texture;
             this.celWidth = celWidth;
             this.celTime = celTime;
-
-            celHeight = Texture.Height;
+            this.celHeight = celHeight;
             celCountX = Texture.Width / celWidth;
             celCountY = Texture.Height / celHeight;
         }

@@ -9,7 +9,7 @@ namespace Project1
         private SpriteBatch spriteBatch;
         private Texture2D backgroundImage;
         const int CEL_WIDTH = 172; // The dimentions of our cell
-        // const int CEL_HEIGHT = 171; this is determined by the animation classes 
+        const int CEL_HEIGHT = 172; // this is determined by the animation classes 
         private Texture2D idleSprite; // - PLAYER
         private CelAnimationSequence walking; // - PLAYER
         private CelAnimationPlayer playerAnimator; // - PLAYER
@@ -42,7 +42,7 @@ namespace Project1
             backgroundImage = Content.Load<Texture2D>("background"); // set up the background image
             idleSprite = Content.Load<Texture2D>("megaman-idle");
             Texture2D spriteSheet = Content.Load<Texture2D>("mega-man-sprite-sheet");
-            walking = new CelAnimationSequence(spriteSheet, CEL_WIDTH, CEL_TIME);
+            walking = new CelAnimationSequence(spriteSheet, CEL_WIDTH, CEL_HEIGHT, CEL_TIME);
             // Set up the animation player
             playerAnimator = new CelAnimationPlayer();
             playerAnimator.Play(walking);
@@ -74,12 +74,12 @@ namespace Project1
             // if we are out of the play area, reset the position 
             if ( horizontalPosition > SCREEN_WIDTH - spriteWidth)
             {
-                // We have gone too far too the right, reset position to just back inside
+                // We have gone too far, reset position to just back inside
                 player1.UpdatePosition(new Vector2(SCREEN_WIDTH - spriteWidth - player1.HorizontalSpeed(), player1.Position().Y));
             }
-            else if (horizontalPosition < spriteWidth)
+            else if (horizontalPosition < 0)
             {
-                player1.UpdatePosition(new Vector2(spriteWidth + player1.HorizontalSpeed(), player1.Position().Y));
+                player1.UpdatePosition(new Vector2(player1.HorizontalSpeed(), player1.Position().Y));
             }
             else
             {
@@ -99,7 +99,7 @@ namespace Project1
             }
         }
 
-        // This will draw the scene each frame. Draw either the idle state or walking state and animation based on whether we are moving
+        // Draw either the idle state or walking state and animation based on whether we are moving
         public void DrawPlayer()
         {
             Movement motionState = player1.Motion();
