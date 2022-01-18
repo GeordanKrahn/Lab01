@@ -1,6 +1,9 @@
-﻿namespace Project1
+﻿// Created by Geordan Krahn
+
+// We want to know whether an actor is a player, enemy or ally.
+
+namespace Project1
 {
-    // We want to know whether an actor is a player, enemy or ally.
     public enum ActorType
     {
         Player = 0,

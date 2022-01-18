@@ -8,14 +8,14 @@ using Microsoft.Xna.Framework.Graphics;
  * I do not own these images. 
  * They have been used here for educational purposes only
  * 
- * The background was aquired from the Unity Asset Store
+ * The background png was acquired from the Unity Asset Store
  * The original creator is Ansimuz
  * 
  */
 
 namespace Project1
 {
-    public class Game1 : Game
+    public class Demo : Game
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
@@ -27,7 +27,7 @@ namespace Project1
         const int SCREEN_WIDTH = 384; // for the boundaries
         Actor player; // our player to control. 
 
-        public Game1()
+        public Demo()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";

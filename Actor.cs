@@ -1,10 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+// Created by Geordan Krahn
+
 /*
- * This object is reponsible for representing the player we control
- * It contains a position, a speed, direction, and motion state
- * This player also has an input component
+ * This object is responsible for representing the current actor
+ * It contains a position, a speed, direction, actor type, and motion state
+ * This player also has an input component, an idle sprite, cel animation sequence for walking, and the cel animation player for walking
+ * 
+ * Perhaps this should be a base class to the player, enemy and ally types...
+ * 
  */
 
 namespace Project1
@@ -35,14 +40,14 @@ namespace Project1
         /// <summary>
         /// Greedy Constructor
         /// </summary>
-        /// <param name="actorType"></param>
-        /// <param name="spritePosition"></param>
-        /// <param name="idleSprite"></param>
-        /// <param name="walkingSpriteSheet"></param>
-        /// <param name="walkingSpriteSheetCelDimentions"></param>
-        /// <param name="celTime"></param>
-        /// <param name="horizontalSpeed"></param>
-        /// <param name="initialFacingDirection"></param>
+        /// <param name="actorType">The type of actor this is</param>
+        /// <param name="spritePosition">position in space for this actor</param>
+        /// <param name="idleSprite">the idle sprite of this actor</param>
+        /// <param name="walkingSpriteSheet">the walking animation sprite sheet for this actor</param>
+        /// <param name="walkingSpriteSheetCelDimentions">The dimentions of the spritesheet for the animation as Vector2</param>
+        /// <param name="celTime">The time in seconds for each frame of the animation</param>
+        /// <param name="horizontalSpeed">the horizontal speed for this actor</param>
+        /// <param name="initialFacingDirection">the initial facing direction for this actor</param>
         public Actor(ActorType actorType, Vector2 spritePosition, Texture2D idleSprite, Texture2D walkingSpriteSheet, Vector2 walkingSpriteSheetCelDimentions, float celTime, int horizontalSpeed, FacingDirection initialFacingDirection)
         {
             // initialize this player

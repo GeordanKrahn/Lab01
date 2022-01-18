@@ -1,12 +1,26 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+// Created by Geordan Krahn
+// This class is responsible to updating the states and position of the actor, as well as drawing and animating the actor.
+// Its methods take actors as arguments and makes decisions based on the states of the actor.
+
 namespace Project1
 {
+    /// <summary>
+    /// This class is responsible to updating the states and position of the actor, 
+    /// as well as drawing and animating the actor.
+    /// Its methods take actors as arguments and makes decisions based on the states of the actor.
+    /// </summary>
     public static class UpdateActor
     {
-        // use this in the Update() in the game class
-        // This will keep track of and update the states and position of our character and listen for input
+        /// <summary>
+        /// use this in the Update() in the game class
+        /// This will keep track of and update the states and position of our character and listen for input
+        /// </summary>
+        /// <param name="actor"></param>
+        /// <param name="screenWidth"></param>
+        /// <param name="gameTime"></param>
         public static void Update(Actor actor, int screenWidth, GameTime gameTime)
         {
             actor.CaptureInput();
@@ -41,8 +55,12 @@ namespace Project1
             actor.UpdateWalkingPlayer(gameTime);
         }
 
-        // use this in the Draw() in the game class on the player you need to animate or draw
-        // Draw either the idle state or walking state and animation based on whether we are moving
+        /// <summary>
+        /// use this in the Draw() in the game class on the player you need to animate or draw
+        /// Draw either the idle state or walking state and animation based on whether we are moving
+        /// </summary>
+        /// <param name="actor"></param>
+        /// <param name="spriteBatch"></param>
         public static void Draw(Actor actor, SpriteBatch spriteBatch)
         {
             Movement motionState = actor.GetMotionState();

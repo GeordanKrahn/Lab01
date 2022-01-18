@@ -1,7 +1,11 @@
-﻿namespace Project1
+﻿// Created by Geordan Krahn
+
+namespace Project1
 {
-    // Need a facing direction. If facing right, keep sprite orientation
-    // If facing left flip the image - -1 scale should work.
+    /// <summary>
+    /// Need a facing direction. If facing right, keep sprite orientation
+    /// If facing left flip the image - -1 scale should work.
+    /// </summary>
     public enum FacingDirection
     {
         Right = 0,

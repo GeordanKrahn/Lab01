@@ -1,6 +1,7 @@
-﻿namespace Project1
+﻿// Created by Geordan Krahn
+// State for whether we are moving or not.
+namespace Project1
 {
-    // State for whether we are moving or not.
     public enum Movement
     {
         Idle = 0,

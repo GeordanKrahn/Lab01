@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Input;
 
+// Created by Geordan Krahn
 // I created this class to exlicitly listen for input.
 // Should work to control any player object.
 // I may work on creating an AI driver which can return "input" to this class.
