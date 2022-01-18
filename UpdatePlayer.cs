@@ -7,7 +7,7 @@ namespace Project1
     {
         // use this in the Update() in the game class
         // This will keep track of and update the states and position of our character and listen for input
-        public static void Update(Player player, int screenWidth)
+        public static void Update(Player player, int screenWidth, GameTime gameTime)
         {
             player.CaptureInput();
             int horizontalPosition = (int)player.GetPosition().X;
@@ -38,11 +38,12 @@ namespace Project1
                     }
                 }
             }
+            player.UpdateWalkingPlayer(gameTime);
         }
 
         // use this in the Draw() in the game class on the player you need to animate or draw
         // Draw either the idle state or walking state and animation based on whether we are moving
-        public static void Draw(Player player, SpriteBatch spriteBatch, CelAnimationPlayer playerAnimator)
+        public static void Draw(Player player, SpriteBatch spriteBatch)
         {
             Movement motionState = player.GetMotionState();
             FacingDirection direction = player.GetFacingDireciton();
@@ -62,11 +63,11 @@ namespace Project1
             {
                 if (direction == FacingDirection.Right)
                 {
-                    playerAnimator.Draw(spriteBatch, spritePosition, SpriteEffects.None);
+                    player.DrawWalkingAnimationFrame(spriteBatch, spritePosition, SpriteEffects.None);
                 }
                 else if (direction == FacingDirection.Left)
                 {
-                    playerAnimator.Draw(spriteBatch, spritePosition, SpriteEffects.FlipHorizontally);
+                    player.DrawWalkingAnimationFrame(spriteBatch, spritePosition, SpriteEffects.FlipHorizontally);
                 }
             }
         }

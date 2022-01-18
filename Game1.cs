@@ -20,12 +20,9 @@ namespace Project1
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private Texture2D backgroundImage;
-        const int CEL_WIDTH = 172; // The dimentions of our cell
-        const int CEL_HEIGHT = 172; // this is determined by the animation classes 
-        private CelAnimationSequence walking; // - PLAYER
-        private CelAnimationPlayer playerAnimator; // - PLAYER
 
         const float CEL_TIME = 1 / 8.0f;
+        readonly Vector2 SpriteSheetCelDimentions = new Vector2(5, 2);
         const int SCREEN_HEIGHT = 224; // for the boundaries
         const int SCREEN_WIDTH = 384; // for the boundaries
         Player player1; // our player to control. 
@@ -39,9 +36,6 @@ namespace Project1
 
         protected override void Initialize()
         {
-            // get the idle sprite for the player
-            Texture2D idleSprite = Content.Load<Texture2D>("megaman-idle");
-            player1 = new Player(new Vector2(0,0),idleSprite, 2, FacingDirection.Right);
             graphics.PreferredBackBufferWidth = SCREEN_WIDTH;
             graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;
             graphics.ApplyChanges();
@@ -50,20 +44,22 @@ namespace Project1
 
         protected override void LoadContent()
         {
+            // get the idle sprite and spritesheets for the player
+            Texture2D idleSprite = Content.Load<Texture2D>("megaman-idle");
+            Texture2D spriteSheet = Content.Load<Texture2D>("mega-man-sprite-sheet");
+
+            // create the player
+            player1 = new Player(new Vector2(0, 0), idleSprite, spriteSheet, SpriteSheetCelDimentions, CEL_TIME, 2, FacingDirection.Right);
+            player1.StartWalkingAnimationPlayer(); // start the animation player in player
+
+            // Set the background
             spriteBatch = new SpriteBatch(GraphicsDevice);
             backgroundImage = Content.Load<Texture2D>("background"); // set up the background image
-            
-            Texture2D spriteSheet = Content.Load<Texture2D>("mega-man-sprite-sheet");
-            walking = new CelAnimationSequence(spriteSheet, CEL_WIDTH, CEL_HEIGHT, CEL_TIME);
-            // Set up the animation player
-            playerAnimator = new CelAnimationPlayer();
-            playerAnimator.Play(walking);
         }
 
         protected override void Update(GameTime gameTime)
         {
-            UpdatePlayer.Update(player1, SCREEN_WIDTH);
-            playerAnimator.Update(gameTime); // this just queues the next frame of animation
+            UpdatePlayer.Update(player1, SCREEN_WIDTH, gameTime);
             base.Update(gameTime);
         }
 
@@ -72,7 +68,7 @@ namespace Project1
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
             spriteBatch.Draw(backgroundImage, Vector2.Zero, Color.White); // draw background
-            UpdatePlayer.Draw(player1, spriteBatch, playerAnimator); // draw our character
+            UpdatePlayer.Draw(player1, spriteBatch); // draw our character
             spriteBatch.End();
             base.Draw(gameTime);
         }
