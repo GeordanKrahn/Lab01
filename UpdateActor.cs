@@ -3,71 +3,71 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Project1
 {
-    public static class UpdatePlayer
+    public static class UpdateActor
     {
         // use this in the Update() in the game class
         // This will keep track of and update the states and position of our character and listen for input
-        public static void Update(Player player, int screenWidth, GameTime gameTime)
+        public static void Update(Actor actor, int screenWidth, GameTime gameTime)
         {
-            player.CaptureInput();
-            int horizontalPosition = (int)player.GetPosition().X;
-            int spriteWidth = player.GetIdleSprite().Width;
+            actor.CaptureInput();
+            int horizontalPosition = (int)actor.GetPosition().X;
+            int spriteWidth = actor.GetIdleSprite().Width;
             // if we are out of the play area, reset the position 
             if (horizontalPosition > screenWidth - spriteWidth)
             {
                 // We have gone too far, reset position to just back inside
-                player.SetPosition(new Vector2(screenWidth - spriteWidth - player.GetHorizontalSpeed(), player.GetPosition().Y));
+                actor.SetPosition(new Vector2(screenWidth - spriteWidth - actor.GetHorizontalSpeed(), actor.GetPosition().Y));
             }
             else if (horizontalPosition < 0)
             {
-                player.SetPosition(new Vector2(player.GetHorizontalSpeed(), player.GetPosition().Y));
+                actor.SetPosition(new Vector2(actor.GetHorizontalSpeed(), actor.GetPosition().Y));
             }
             else
             {
-                Movement motionState = player.GetMotionState();
+                Movement motionState = actor.GetMotionState();
                 if (motionState == Movement.Walking)
                 {
-                    FacingDirection direction = player.GetFacingDireciton();
+                    FacingDirection direction = actor.GetFacingDireciton();
                     if (direction == FacingDirection.Right)
                     {
-                        player.SetPosition(new Vector2(horizontalPosition + player.GetHorizontalSpeed(), player.GetPosition().Y));
+                        actor.SetPosition(new Vector2(horizontalPosition + actor.GetHorizontalSpeed(), actor.GetPosition().Y));
                     }
                     else if (direction == FacingDirection.Left)
                     {
-                        player.SetPosition(new Vector2(horizontalPosition - player.GetHorizontalSpeed(), player.GetPosition().Y));
+                        actor.SetPosition(new Vector2(horizontalPosition - actor.GetHorizontalSpeed(), actor.GetPosition().Y));
                     }
                 }
             }
-            player.UpdateWalkingPlayer(gameTime);
+            actor.UpdateWalkingPlayer(gameTime);
         }
 
         // use this in the Draw() in the game class on the player you need to animate or draw
         // Draw either the idle state or walking state and animation based on whether we are moving
-        public static void Draw(Player player, SpriteBatch spriteBatch)
+        public static void Draw(Actor actor, SpriteBatch spriteBatch)
         {
-            Movement motionState = player.GetMotionState();
-            FacingDirection direction = player.GetFacingDireciton();
-            Vector2 spritePosition = player.GetPosition();
+            Movement motionState = actor.GetMotionState();
+            FacingDirection direction = actor.GetFacingDireciton();
+            Vector2 spritePosition = actor.GetPosition();
             if (motionState == Movement.Idle)
             {
                 if (direction == FacingDirection.Right)
                 {
-                    spriteBatch.Draw(player.GetIdleSprite(), spritePosition, Color.White);
+                    spriteBatch.Draw(actor.GetIdleSprite(), spritePosition, Color.White);
                 }
                 else if (direction == FacingDirection.Left)
                 {
-                    spriteBatch.Draw(player.GetIdleSprite(), spritePosition, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.FlipHorizontally, 0);
+                    spriteBatch.Draw(actor.GetIdleSprite(), spritePosition, null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.FlipHorizontally, 0);
                 }
             }
             else if (motionState == Movement.Walking)
             {
                 if (direction == FacingDirection.Right)
                 {
-                    player.DrawWalkingAnimationFrame(spriteBatch, spritePosition, SpriteEffects.None);
+                    actor.DrawWalkingAnimationFrame(spriteBatch, spritePosition, SpriteEffects.None);
                 }
                 else if (direction == FacingDirection.Left)
                 {
-                    player.DrawWalkingAnimationFrame(spriteBatch, spritePosition, SpriteEffects.FlipHorizontally);
+                    actor.DrawWalkingAnimationFrame(spriteBatch, spritePosition, SpriteEffects.FlipHorizontally);
                 }
             }
         }

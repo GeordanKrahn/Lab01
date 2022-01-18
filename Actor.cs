@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 /*
  * This object is reponsible for representing the player we control
@@ -10,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Project1
 {
-    public class Player
+    public class Actor
     {
         // This will be used to draw the idle sprite or animate the sprite sheet at a point.
         private Vector2 spritePosition;
@@ -18,24 +17,41 @@ namespace Project1
         // Horizontal Speed
         private int horizontalSpeed;
 
+        // is this a player?
+        public ActorType actorType { get; set; }
+
         // states to keep track of our character
         private Movement motionState;
         private FacingDirection direction;
 
         // sprite which represents the player. Its just logical to have this here
         private Texture2D idleSprite;
-        // private Texture2D walkingSpriteSheet; this will only be used by the CelAnimationSequence
+
+        // private Texture2D walkingSpriteSheet; // this will only be used by the CelAnimationSequence
+        
         private CelAnimationSequence walking; // used by the player
         private CelAnimationPlayer walkingPlayer; // used by the player
 
-        // Greedy Constructor
-        public Player(Vector2 spritePosition, Texture2D idleSprite, Texture2D walkingSpriteSheet, Vector2 walkingSpriteSheetCelDimentions, float celTime, int horizontalSpeed, FacingDirection initialFacingDirection)
+        /// <summary>
+        /// Greedy Constructor
+        /// </summary>
+        /// <param name="actorType"></param>
+        /// <param name="spritePosition"></param>
+        /// <param name="idleSprite"></param>
+        /// <param name="walkingSpriteSheet"></param>
+        /// <param name="walkingSpriteSheetCelDimentions"></param>
+        /// <param name="celTime"></param>
+        /// <param name="horizontalSpeed"></param>
+        /// <param name="initialFacingDirection"></param>
+        public Actor(ActorType actorType, Vector2 spritePosition, Texture2D idleSprite, Texture2D walkingSpriteSheet, Vector2 walkingSpriteSheetCelDimentions, float celTime, int horizontalSpeed, FacingDirection initialFacingDirection)
         {
             // initialize this player
             this.spritePosition = spritePosition;
             this.horizontalSpeed = horizontalSpeed;
             this.idleSprite = idleSprite;
-            // this.walkingSpriteSheet = walkingSpriteSheet; this will only be used by the CelAnimationSequence
+            this.actorType = actorType;
+            
+            // this.walkingSpriteSheet = walkingSpriteSheet; // this will only be used by the CelAnimationSequence
 
             // determine dimentions of the spritesheet
             int CelWidth = walkingSpriteSheet.Width / (int)walkingSpriteSheetCelDimentions.X;
@@ -48,55 +64,98 @@ namespace Project1
             motionState = Movement.Idle;
         }
 
-        // accessors
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newPosition"></param>
         public void SetPosition(Vector2 newPosition)
         {
             spritePosition = newPosition;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public Vector2 GetPosition()
         {
             return spritePosition;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newSpeed"></param>
         public void SetHorizontalSpeed(int newSpeed)
         {
             horizontalSpeed = newSpeed;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public int GetHorizontalSpeed()
         {
             return horizontalSpeed;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newMotion"></param>
         public void SetMotionState(Movement newMotion)
         {
             motionState = newMotion;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public Movement GetMotionState()
         {
             return motionState;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newDirection"></param>
         public void SetFacingDirection(FacingDirection newDirection)
         {
             direction = newDirection;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public FacingDirection GetFacingDireciton()
         {
             return direction;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public Texture2D GetIdleSprite()
         {
             return idleSprite;
         }
 
-        // This object will update itself
+        /// <summary>
+        /// This object will update itself
+        /// </summary>
         public void CaptureInput()
         {
             InputListener.CaptureInput(this);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void StartWalkingAnimationPlayer()
         {
             // Set up the animation player
@@ -104,13 +163,21 @@ namespace Project1
             walkingPlayer.Play(walking);
         }
 
-        // call in Update after everything else
+        /// <summary>
+        /// call in Update after everything else
+        /// </summary>
+        /// <param name="gameTime"></param>
         public void UpdateWalkingPlayer(GameTime gameTime)
         {
             walkingPlayer.Update(gameTime); // this just queues the next frame of animation
         }
 
-        // call in Draw
+        /// <summary>
+        /// call in Draw
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="spritePosition"></param>
+        /// <param name="effects"></param>
         public void DrawWalkingAnimationFrame(SpriteBatch spriteBatch, Vector2 spritePosition, SpriteEffects effects)
         {
             walkingPlayer.Draw(spriteBatch, spritePosition, effects);

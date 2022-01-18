@@ -25,7 +25,7 @@ namespace Project1
         readonly Vector2 SpriteSheetCelDimentions = new Vector2(5, 2);
         const int SCREEN_HEIGHT = 224; // for the boundaries
         const int SCREEN_WIDTH = 384; // for the boundaries
-        Player player1; // our player to control. 
+        Actor player; // our player to control. 
 
         public Game1()
         {
@@ -49,8 +49,8 @@ namespace Project1
             Texture2D spriteSheet = Content.Load<Texture2D>("mega-man-sprite-sheet");
 
             // create the player
-            player1 = new Player(new Vector2(0, 0), idleSprite, spriteSheet, SpriteSheetCelDimentions, CEL_TIME, 2, FacingDirection.Right);
-            player1.StartWalkingAnimationPlayer(); // start the animation player in player
+            player = new Actor(ActorType.Player, new Vector2(0, 0), idleSprite, spriteSheet, SpriteSheetCelDimentions, CEL_TIME, 2, FacingDirection.Right);
+            player.StartWalkingAnimationPlayer(); // start the animation player in player
 
             // Set the background
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -59,7 +59,7 @@ namespace Project1
 
         protected override void Update(GameTime gameTime)
         {
-            UpdatePlayer.Update(player1, SCREEN_WIDTH, gameTime);
+            UpdateActor.Update(player, SCREEN_WIDTH, gameTime);
             base.Update(gameTime);
         }
 
@@ -68,7 +68,7 @@ namespace Project1
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
             spriteBatch.Draw(backgroundImage, Vector2.Zero, Color.White); // draw background
-            UpdatePlayer.Draw(player1, spriteBatch); // draw our character
+            UpdateActor.Draw(player, spriteBatch); // draw our character
             spriteBatch.End();
             base.Draw(gameTime);
         }
