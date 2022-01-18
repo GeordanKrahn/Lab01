@@ -1,6 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+
+/* Disclaimer
+ *
+ * The Megaman trademark is the property of Cap-Com
+ * I do not own these images. 
+ * They have been used here for educational purposes only
+ * 
+ * The background was aquired from the Unity Asset Store
+ * The original creator is Ansimuz
+ * 
+ */
+
 namespace Project1
 {
     public class Game1 : Game
@@ -10,7 +22,6 @@ namespace Project1
         private Texture2D backgroundImage;
         const int CEL_WIDTH = 172; // The dimentions of our cell
         const int CEL_HEIGHT = 172; // this is determined by the animation classes 
-        private Texture2D idleSprite; // - PLAYER
         private CelAnimationSequence walking; // - PLAYER
         private CelAnimationPlayer playerAnimator; // - PLAYER
 
@@ -28,8 +39,9 @@ namespace Project1
 
         protected override void Initialize()
         {
-            
-            player1 = new Player(new Vector2(0,0), 2, FacingDirection.Right);
+            // get the idle sprite for the player
+            Texture2D idleSprite = Content.Load<Texture2D>("megaman-idle");
+            player1 = new Player(new Vector2(0,0),idleSprite, 2, FacingDirection.Right);
             graphics.PreferredBackBufferWidth = SCREEN_WIDTH;
             graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;
             graphics.ApplyChanges();
@@ -40,7 +52,7 @@ namespace Project1
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             backgroundImage = Content.Load<Texture2D>("background"); // set up the background image
-            idleSprite = Content.Load<Texture2D>("megaman-idle");
+            
             Texture2D spriteSheet = Content.Load<Texture2D>("mega-man-sprite-sheet");
             walking = new CelAnimationSequence(spriteSheet, CEL_WIDTH, CEL_HEIGHT, CEL_TIME);
             // Set up the animation player
@@ -50,7 +62,7 @@ namespace Project1
 
         protected override void Update(GameTime gameTime)
         {
-            UpdatePlayer();
+            UpdatePlayer.Update(player1, SCREEN_WIDTH);
             playerAnimator.Update(gameTime); // this just queues the next frame of animation
             base.Update(gameTime);
         }
@@ -60,73 +72,9 @@ namespace Project1
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
             spriteBatch.Draw(backgroundImage, Vector2.Zero, Color.White); // draw background
-            DrawPlayer(); // draw our character
+            UpdatePlayer.Draw(player1, spriteBatch, playerAnimator); // draw our character
             spriteBatch.End();
             base.Draw(gameTime);
-        }
-
-        // This will keep track of and update the states and position of our character and listen for input.
-        public void UpdatePlayer()
-        {
-            player1.CaptureInput();
-            int horizontalPosition = (int)player1.Position().X;
-            int spriteWidth = idleSprite.Width;
-            // if we are out of the play area, reset the position 
-            if ( horizontalPosition > SCREEN_WIDTH - spriteWidth)
-            {
-                // We have gone too far, reset position to just back inside
-                player1.UpdatePosition(new Vector2(SCREEN_WIDTH - spriteWidth - player1.HorizontalSpeed(), player1.Position().Y));
-            }
-            else if (horizontalPosition < 0)
-            {
-                player1.UpdatePosition(new Vector2(player1.HorizontalSpeed(), player1.Position().Y));
-            }
-            else
-            {
-                Movement motionState = player1.Motion();
-                if (motionState == Movement.Walking)
-                {
-                    FacingDirection direction = player1.Direction();
-                    if (direction == FacingDirection.Right)
-                    {
-                        player1.UpdatePosition(new Vector2(horizontalPosition + player1.HorizontalSpeed(), player1.Position().Y));
-                    }
-                    else if (direction == FacingDirection.Left)
-                    {
-                        player1.UpdatePosition(new Vector2(horizontalPosition - player1.HorizontalSpeed(), player1.Position().Y));
-                    }
-                }
-            }
-        }
-
-        // Draw either the idle state or walking state and animation based on whether we are moving
-        public void DrawPlayer()
-        {
-            Movement motionState = player1.Motion();
-            FacingDirection direction = player1.Direction();
-            Vector2 spritePosition = player1.Position();
-            if (motionState == Movement.Idle)
-            {
-                if (direction == FacingDirection.Right)
-                {
-                    spriteBatch.Draw(idleSprite, spritePosition, Color.White);
-                }
-                else if (direction == FacingDirection.Left)
-                {
-                    spriteBatch.Draw(idleSprite, spritePosition, null, Color.White,0, Vector2.Zero, 1, SpriteEffects.FlipHorizontally, 0);
-                }
-            }
-            else if (motionState == Movement.Walking)
-            {
-                if (direction == FacingDirection.Right)
-                {
-                    playerAnimator.Draw(spriteBatch, spritePosition, SpriteEffects.None);
-                }
-                else if (direction == FacingDirection.Left)
-                {
-                    playerAnimator.Draw(spriteBatch, spritePosition, SpriteEffects.FlipHorizontally);
-                }
-            }
         }
     }
 }
