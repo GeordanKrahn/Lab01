@@ -11,6 +11,8 @@ using Microsoft.Xna.Framework.Graphics;
  * The background png was acquired from the Unity Asset Store
  * The original creator is Ansimuz
  * 
+ * Demo created by Geordan Krahn
+ * 
  */
 
 namespace Project1
@@ -22,10 +24,11 @@ namespace Project1
         private Texture2D backgroundImage;
 
         const float CEL_TIME = 1 / 8.0f;
-        readonly Vector2 SpriteSheetCelDimentions = new Vector2(5, 2);
+        readonly Rectangle SpriteSheetCelDimentions = new Rectangle(0,0,5,2);
         const int SCREEN_HEIGHT = 224; // for the boundaries
         const int SCREEN_WIDTH = 384; // for the boundaries
-        Actor player; // our player to control. 
+
+        APlayer player; // our player to control. 
 
         public Demo()
         {
@@ -49,7 +52,9 @@ namespace Project1
             Texture2D spriteSheet = Content.Load<Texture2D>("mega-man-sprite-sheet");
 
             // create the player
-            player = new Actor(ActorType.Player, new Vector2(0, 0), idleSprite, spriteSheet, SpriteSheetCelDimentions, CEL_TIME, 2, FacingDirection.Right);
+            int horizontalSpeed = 2;
+            EFacingDirection defaultFacingDirection = EFacingDirection.Right;
+            player = new APlayer(new Vector2(0, 0), idleSprite, spriteSheet, SpriteSheetCelDimentions, CEL_TIME, horizontalSpeed, defaultFacingDirection);
             player.StartWalkingAnimationPlayer(); // start the animation player in player
 
             // Set the background
@@ -59,7 +64,7 @@ namespace Project1
 
         protected override void Update(GameTime gameTime)
         {
-            UpdateActor.Update(player, SCREEN_WIDTH, gameTime);
+            ActorUtility.UpdatePlayer(player, SCREEN_WIDTH, gameTime);
             base.Update(gameTime);
         }
 
@@ -68,7 +73,7 @@ namespace Project1
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
             spriteBatch.Draw(backgroundImage, Vector2.Zero, Color.White); // draw background
-            UpdateActor.Draw(player, spriteBatch); // draw our character
+            ActorUtility.DrawPlayer(player, spriteBatch); // draw our character
             spriteBatch.End();
             base.Draw(gameTime);
         }
