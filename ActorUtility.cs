@@ -110,5 +110,25 @@ namespace Project1
                 }
             }
         }
+
+        /// <summary>
+        /// For the crusher. It simple queues the next frame of animation.
+        /// </summary>
+        /// <param name="crusher">Crusher instance</param>
+        /// <param name="gameTime">Gametime instance</param>
+        public static void UpdateCrusher(ACrusher crusher, GameTime gameTime)
+        {
+            crusher.UpdateAnimationPlayer(gameTime);
+        }
+
+        /// <summary>
+        /// This method will draw the current frame of animation.
+        /// </summary>
+        /// <param name="crusher">Crusher Instance</param>
+        /// <param name="spriteBatch">The spritebatch instance responsible for drawing</param>
+        public static void DrawCrusher(ACrusher crusher, SpriteBatch spriteBatch)
+        {
+            crusher.DrawAnimationFrame(spriteBatch, crusher.GetPosition(), SpriteEffects.None);
+        }
     }
 }

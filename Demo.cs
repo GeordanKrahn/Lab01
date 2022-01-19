@@ -11,8 +11,14 @@ using Microsoft.Xna.Framework.Graphics;
  * The background png was acquired from the Unity Asset Store
  * The original creator is Ansimuz
  * 
- * Demo created by Geordan Krahn
+ * The Hammer/Crusher is from a free asset package
+ * called the Free Industrial Zone Asset Pack
+ * by the creator Craftpix.net
  * 
+ * Demo created by Geordan Krahn
+ * For educational purposes
+ * 
+ * This is NOT a commercial product
  */
 
 namespace Project1
@@ -24,11 +30,15 @@ namespace Project1
         private Texture2D backgroundImage;
 
         const float CEL_TIME = 1 / 8.0f;
-        readonly Rectangle SpriteSheetCelDimentions = new Rectangle(0,0,5,2);
+        readonly Rectangle SpriteSheetCelDimentions = new Rectangle(0, 0, 5, 2);
+        readonly Rectangle HammerSheetCelDimentions = new Rectangle(0, 0, 8, 1);
+        readonly Vector2 PlayerStartPosition = new Vector2(2, 10);
+        readonly Vector2 CrusherPosition = new Vector2(0, 0);
         const int SCREEN_HEIGHT = 224; // for the boundaries
         const int SCREEN_WIDTH = 384; // for the boundaries
 
-        APlayer player; // our player to control. 
+        APlayer player; // our player to control.
+        ACrusher crusher; // Just the extra animation...
 
         public Demo()
         {
@@ -54,8 +64,17 @@ namespace Project1
             // create the player
             int horizontalSpeed = 2;
             EFacingDirection defaultFacingDirection = EFacingDirection.Right;
-            player = new APlayer(new Vector2(0, 0), idleSprite, spriteSheet, SpriteSheetCelDimentions, CEL_TIME, horizontalSpeed, defaultFacingDirection);
+            player = new APlayer(PlayerStartPosition, idleSprite, spriteSheet, SpriteSheetCelDimentions, CEL_TIME, horizontalSpeed, defaultFacingDirection);
             player.StartWalkingAnimationPlayer(); // start the animation player in player
+
+            // get the spritesheet for the crusher
+            Texture2D crusherSpriteSheet = Content.Load<Texture2D>("Hammer");
+
+            // Create the crusher
+            crusher = new ACrusher(CrusherPosition, null, crusherSpriteSheet, HammerSheetCelDimentions, CEL_TIME, defaultFacingDirection);
+
+            // start the crusher
+            crusher.StartAnimationPlayer();
 
             // Set the background
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -65,6 +84,7 @@ namespace Project1
         protected override void Update(GameTime gameTime)
         {
             ActorUtility.UpdatePlayer(player, SCREEN_WIDTH, gameTime);
+            ActorUtility.UpdateCrusher(crusher, gameTime);
             base.Update(gameTime);
         }
 
@@ -74,6 +94,7 @@ namespace Project1
             spriteBatch.Begin();
             spriteBatch.Draw(backgroundImage, Vector2.Zero, Color.White); // draw background
             ActorUtility.DrawPlayer(player, spriteBatch); // draw our character
+            ActorUtility.DrawCrusher(crusher, spriteBatch); // draw our crusher
             spriteBatch.End();
             base.Draw(gameTime);
         }
